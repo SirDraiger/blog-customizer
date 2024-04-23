@@ -31,7 +31,7 @@ export const ArticleParamsForm = ({
 	const [open, setOpen] = useState(false);
 
 	// Закрытие формы при клике вне её области и нажатию на Esc
-	const refForm = useRef<HTMLElement | null>(null);
+	const refForm = useRef<HTMLDivElement | null>(null);
 
 	// Открытие формы
 	function handlerOpenForm() {
@@ -112,60 +112,65 @@ export const ArticleParamsForm = ({
 
 	return (
 		<>
-			{/* TODO Вынести обработчик клика в отдельную переменную */}
-			<ArrowButton onClick={handlerOpenForm} isOpen={open} />
-			<aside
-				className={clsx(styles.container, { [styles.container_open]: open })}
-				ref={refForm}>
-				<form className={styles.form} onSubmit={handlerSubmitForm}>
-					<Text as={'h2'} weight={800} size={31} uppercase>
-						Задайте параметры
-					</Text>
+			{/* Доп. див для правки бага двойного клика https://app.pachca.com/chats?thread_id=3492502 */}
+			<div ref={refForm}>
+				<ArrowButton onClick={handlerOpenForm} isOpen={open} />
+				<aside
+					className={clsx(styles.container, { [styles.container_open]: open })}>
+					<form className={styles.form} onSubmit={handlerSubmitForm}>
+						<Text as={'h2'} weight={800} size={31} uppercase>
+							Задайте параметры
+						</Text>
 
-					<Select
-						title={'шрифт'}
-						options={fontFamilyOptions}
-						selected={currentFontFamily}
-						onChange={setCurrentFontFamily}
-					/>
+						<Select
+							title={'шрифт'}
+							options={fontFamilyOptions}
+							selected={currentFontFamily}
+							onChange={setCurrentFontFamily}
+						/>
 
-					<RadioGroup
-						title={'размер шрифта'}
-						options={fontSizeOptions}
-						selected={currentFontSize}
-						name={'fonst-size'}
-						onChange={setCurrentFontSize}
-					/>
+						<RadioGroup
+							title={'размер шрифта'}
+							options={fontSizeOptions}
+							selected={currentFontSize}
+							name={'fonst-size'}
+							onChange={setCurrentFontSize}
+						/>
 
-					<Select
-						title={'цвет шрифта'}
-						options={fontColors}
-						selected={currentFontColor}
-						onChange={setCurrentFontColor}
-					/>
+						<Select
+							title={'цвет шрифта'}
+							options={fontColors}
+							selected={currentFontColor}
+							onChange={setCurrentFontColor}
+						/>
 
-					<Separator />
+						<Separator />
 
-					<Select
-						title={'цвет фона'}
-						options={fontColors}
-						selected={currentBackgroundColor}
-						onChange={setCurrentBackgroundColor}
-					/>
+						<Select
+							title={'цвет фона'}
+							options={fontColors}
+							selected={currentBackgroundColor}
+							onChange={setCurrentBackgroundColor}
+						/>
 
-					<Select
-						title={'цвет контекта'}
-						options={contentWidthArr}
-						selected={currentContentWidth}
-						onChange={setCurrentContentWidth}
-					/>
+						<Select
+							title={'цвет контекта'}
+							options={contentWidthArr}
+							selected={currentContentWidth}
+							onChange={setCurrentContentWidth}
+						/>
 
-					<div className={styles.bottomContainer}>
-						<Button title='Сбросить' type='reset' onClick={handlerResetForm} />
-						<Button title='Применить' type='submit' />
-					</div>
-				</form>
-			</aside>
+						<div className={styles.bottomContainer}>
+							<Button
+								title='Сбросить'
+								type='reset'
+								onClick={handlerResetForm}
+							/>
+							<Button title='Применить' type='submit' />
+						</div>
+					</form>
+				</aside>
+			</div>
 		</>
 	);
 };
