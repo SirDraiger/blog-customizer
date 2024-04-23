@@ -12,10 +12,6 @@ import styles from './styles/index.module.scss';
 const domNode = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(domNode);
 
-// TODO Реализовать передачу значений в ArticleParamsForm
-// [ ] Дефолтные значения (defaultArticleState из articleProps.ts)
-// [ ] Реализовать стейт данных формы. Возможно передавать по умолчанию в useState (defaultArticleState).
-
 const App = () => {
 	return (
 		<div

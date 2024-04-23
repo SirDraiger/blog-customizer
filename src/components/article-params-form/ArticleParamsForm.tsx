@@ -6,7 +6,7 @@ import { RadioGroup } from 'components/radio-group';
 import { Separator } from 'components/separator';
 
 import styles from './ArticleParamsForm.module.scss';
-import { useEffect, useRef, useState } from 'react';
+import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import {
 	ArticleStateType,
@@ -15,12 +15,6 @@ import {
 	fontColors,
 	contentWidthArr,
 } from '../../constants/articleProps';
-
-// TODO Реализовать передачу данных в форму
-// [ ] Типизировать пропсы
-// [ ] Передать дефолтные значения через App (defaultArticleState из articleProps.ts)
-// [ ] Заполнить форму дочерними компонентами по макету
-// [ ] Подставить дефолтные значения
 
 export type ArticleParamsFormProps = {
 	articleParams: ArticleStateType;
@@ -31,8 +25,6 @@ export const ArticleParamsForm = ({
 }: ArticleParamsFormProps) => {
 	// Храним статус открытия формы
 	const [open, setOpen] = useState(false);
-
-	console.log(articleParams);
 
 	// Закрытие формы при клике вне её области и нажатию на Esc
 	const refForm = useRef<HTMLElement | null>(null);
@@ -52,7 +44,6 @@ export const ArticleParamsForm = ({
 
 		function handlePressEsc(event: KeyboardEvent) {
 			if (event.key === 'Escape') {
-				console.log(event.key);
 				setOpen(!open);
 			}
 		}
@@ -66,6 +57,48 @@ export const ArticleParamsForm = ({
 		};
 	}, [open]);
 
+	// Стейты элементов формы
+	const [currentFontFamily, setCurrentFontFamily] = useState(
+		articleParams.fontFamilyOption
+	);
+	const [currentFontSize, setCurrentFontSize] = useState(
+		articleParams.fontSizeOption
+	);
+	const [currentFontColor, setCurrentFontColor] = useState(
+		articleParams.fontColor
+	);
+	const [currentBackgroundColor, setCurrentBackgroundColor] = useState(
+		articleParams.backgroundColor
+	);
+	const [currentContentWidth, setCurrentContentWidth] = useState(
+		articleParams.contentWidth
+	);
+
+	// Отправка формы
+	function handlerSubmitForm(event: SyntheticEvent) {
+		event.preventDefault();
+		// TODO Связать изменение с App
+		const formData: ArticleStateType = {
+			fontFamilyOption: currentFontFamily,
+			fontColor: currentFontColor,
+			backgroundColor: currentBackgroundColor,
+			contentWidth: currentContentWidth,
+			fontSizeOption: currentFontSize,
+		};
+
+		console.log(formData);
+	}
+
+	// Сброс данных формы
+	function handlerResetForm() {
+		// TODO Связать изменение с App
+		setCurrentFontFamily(articleParams.fontFamilyOption);
+		setCurrentFontSize(articleParams.fontSizeOption);
+		setCurrentFontColor(articleParams.fontColor);
+		setCurrentBackgroundColor(articleParams.backgroundColor);
+		setCurrentContentWidth(articleParams.contentWidth);
+	}
+
 	return (
 		<>
 			{/* TODO Вынести обработчик клика в отдельную переменную */}
@@ -78,7 +111,7 @@ export const ArticleParamsForm = ({
 			<aside
 				className={clsx(styles.container, { [styles.container_open]: open })}
 				ref={refForm}>
-				<form className={styles.form}>
+				<form className={styles.form} onSubmit={handlerSubmitForm}>
 					<Text as={'h2'} weight={800} size={31} uppercase>
 						Задайте параметры
 					</Text>
@@ -86,20 +119,23 @@ export const ArticleParamsForm = ({
 					<Select
 						title={'шрифт'}
 						options={fontFamilyOptions}
-						selected={articleParams.fontFamilyOption}
+						selected={currentFontFamily}
+						onChange={setCurrentFontFamily}
 					/>
 
 					<RadioGroup
 						title={'размер шрифта'}
 						options={fontSizeOptions}
-						selected={articleParams.fontSizeOption}
+						selected={currentFontSize}
 						name={'fonst-size'}
+						onChange={setCurrentFontSize}
 					/>
 
 					<Select
 						title={'цвет шрифта'}
 						options={fontColors}
-						selected={articleParams.fontColor}
+						selected={currentFontColor}
+						onChange={setCurrentFontColor}
 					/>
 
 					<Separator />
@@ -107,17 +143,19 @@ export const ArticleParamsForm = ({
 					<Select
 						title={'цвет фона'}
 						options={fontColors}
-						selected={articleParams.fontColor}
+						selected={currentBackgroundColor}
+						onChange={setCurrentBackgroundColor}
 					/>
 
 					<Select
 						title={'цвет контекта'}
 						options={contentWidthArr}
-						selected={articleParams.contentWidth}
+						selected={currentContentWidth}
+						onChange={setCurrentContentWidth}
 					/>
 
 					<div className={styles.bottomContainer}>
-						<Button title='Сбросить' type='reset' />
+						<Button title='Сбросить' type='reset' onClick={handlerResetForm} />
 						<Button title='Применить' type='submit' />
 					</div>
 				</form>
