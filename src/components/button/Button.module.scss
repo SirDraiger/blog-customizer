@@ -17,3 +17,27 @@
 .button:hover {
 	background: var(--gold, #ffc802);
 }
+
+.button_reset {
+	background-color: #ffffff;
+}
+
+.button_reset:hover {
+	background-color: #000000;
+}
+
+.button_reset:hover > div {
+	color: #ffffff;
+}
+
+.button_submit {
+	background-color: #ffc802;
+}
+
+.button_submit:hover {
+	background-color: #ffedab;
+}
+
+.button_submit:hover > div {
+	color: #000000;
+}
