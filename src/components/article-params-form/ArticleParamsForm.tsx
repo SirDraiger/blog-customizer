@@ -17,17 +17,26 @@ import {
 } from '../../constants/articleProps';
 
 export type ArticleParamsFormProps = {
+	defaultArticleParams: ArticleStateType;
 	articleParams: ArticleStateType;
+	setCurrentArticleState: (params: ArticleStateType) => void;
 };
 
 export const ArticleParamsForm = ({
+	defaultArticleParams,
 	articleParams,
+	setCurrentArticleState,
 }: ArticleParamsFormProps) => {
 	// Храним статус открытия формы
 	const [open, setOpen] = useState(false);
 
 	// Закрытие формы при клике вне её области и нажатию на Esc
 	const refForm = useRef<HTMLElement | null>(null);
+
+	// Открытие формы
+	function handlerOpenForm() {
+		setOpen(!open);
+	}
 
 	useEffect(() => {
 		if (!open) return;
@@ -77,7 +86,8 @@ export const ArticleParamsForm = ({
 	// Отправка формы
 	function handlerSubmitForm(event: SyntheticEvent) {
 		event.preventDefault();
-		// TODO Связать изменение с App
+
+		// Изменённые данные формы для передачи в стейт
 		const formData: ArticleStateType = {
 			fontFamilyOption: currentFontFamily,
 			fontColor: currentFontColor,
@@ -86,28 +96,23 @@ export const ArticleParamsForm = ({
 			fontSizeOption: currentFontSize,
 		};
 
-		console.log(formData);
+		// Отправка данных в стейт
+		setCurrentArticleState(formData);
 	}
 
 	// Сброс данных формы
 	function handlerResetForm() {
-		// TODO Связать изменение с App
-		setCurrentFontFamily(articleParams.fontFamilyOption);
-		setCurrentFontSize(articleParams.fontSizeOption);
-		setCurrentFontColor(articleParams.fontColor);
-		setCurrentBackgroundColor(articleParams.backgroundColor);
-		setCurrentContentWidth(articleParams.contentWidth);
+		setCurrentFontFamily(defaultArticleParams.fontFamilyOption);
+		setCurrentFontSize(defaultArticleParams.fontSizeOption);
+		setCurrentFontColor(defaultArticleParams.fontColor);
+		setCurrentBackgroundColor(defaultArticleParams.backgroundColor);
+		setCurrentContentWidth(defaultArticleParams.contentWidth);
 	}
 
 	return (
 		<>
 			{/* TODO Вынести обработчик клика в отдельную переменную */}
-			<ArrowButton
-				onClick={() => {
-					setOpen(!open);
-				}}
-				isOpen={open}
-			/>
+			<ArrowButton onClick={handlerOpenForm} />
 			<aside
 				className={clsx(styles.container, { [styles.container_open]: open })}
 				ref={refForm}>
