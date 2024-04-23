@@ -29,6 +29,7 @@ export const ArticleParamsForm = ({
 }: ArticleParamsFormProps) => {
 	// Храним статус открытия формы
 	const [open, setOpen] = useState(false);
+	console.log(open);
 
 	// Закрытие формы при клике вне её области и нажатию на Esc
 	const refForm = useRef<HTMLElement | null>(null);
@@ -112,7 +113,7 @@ export const ArticleParamsForm = ({
 	return (
 		<>
 			{/* TODO Вынести обработчик клика в отдельную переменную */}
-			<ArrowButton onClick={handlerOpenForm} />
+			<ArrowButton onClick={handlerOpenForm} isOpen={open} />
 			<aside
 				className={clsx(styles.container, { [styles.container_open]: open })}
 				ref={refForm}>
