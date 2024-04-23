@@ -29,7 +29,6 @@ export const ArticleParamsForm = ({
 }: ArticleParamsFormProps) => {
 	// Храним статус открытия формы
 	const [open, setOpen] = useState(false);
-	console.log(open);
 
 	// Закрытие формы при клике вне её области и нажатию на Esc
 	const refForm = useRef<HTMLElement | null>(null);
@@ -101,13 +100,14 @@ export const ArticleParamsForm = ({
 		setCurrentArticleState(formData);
 	}
 
-	// Сброс данных формы
+	// Сброс данных формы и статьи на дефолтные
 	function handlerResetForm() {
 		setCurrentFontFamily(defaultArticleParams.fontFamilyOption);
 		setCurrentFontSize(defaultArticleParams.fontSizeOption);
 		setCurrentFontColor(defaultArticleParams.fontColor);
 		setCurrentBackgroundColor(defaultArticleParams.backgroundColor);
 		setCurrentContentWidth(defaultArticleParams.contentWidth);
+		setCurrentArticleState(defaultArticleParams);
 	}
 
 	return (
